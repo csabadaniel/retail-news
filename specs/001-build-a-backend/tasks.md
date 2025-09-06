@@ -29,7 +29,7 @@
 - [ ] T004 [P] Configure linting and formatting tools (ESLint, Prettier) in `src/`
 - [ ] T005 [P] Setup environment variable management (dotenv or AWS Parameter Store) in `src/config/`
 - [ ] T006 [P] Configure Jest for TypeScript using ts-jest; add jest.config.js and install ts-jest and @types/jest
-- [ ] T007 [P] Set up Jest mocks for external services (nodemailer, Gemini API) in contract/integration tests; avoid logging or asserting on circular objects
+ [ ] T007 [P] Set up Jest mocks for external services (nodemailer, Gemini API) at the top of each contract/integration test file using Jest mocks. Do not perform real network calls in tests. If a test fails due to circular structure errors (e.g., TypeError: Converting circular structure to JSON), refactor the test to only assert on primitive values or use a custom serializer. Do not log or assert on objects with circular references.
 
 ## Phase 3.2: Tests First (TDD)
 - [ ] T008 Create contract test for Gemini API client in `tests/contract/geminiClient.contract.test.ts`

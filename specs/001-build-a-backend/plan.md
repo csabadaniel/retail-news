@@ -32,6 +32,8 @@ This feature delivers a backend service that periodically fetches summaries of t
 **Collaboration/Hosting**: The project is shared via GitHub
 **Test Runner Setup**: Jest must be configured for TypeScript using `ts-jest`. Add a `jest.config.js` file and install `ts-jest` and `@types/jest` as dev dependencies to ensure tests run correctly.
 **Test Reliability**: All contract and integration tests must mock external services (e.g., nodemailer, Gemini API) at the top of each test file using Jest mocks. No test should perform real network calls. Avoid logging or asserting on objects with circular references to prevent serialization errors. If a test fails due to a circular structure, refactor the test to only assert on primitive values or use custom serializers.
+**Troubleshooting Test Failures**:
+If contract or integration tests fail due to real network calls (e.g., SMTP errors from nodemailer or Gemini API), ensure these services are mocked at the top of the test file using Jest. For circular structure errors (e.g., TypeError: Converting circular structure to JSON), refactor the test to only assert on primitive values or use a custom serializer. Do not log or assert on objects with circular references.
 
 ## Constitution Check
 **Simplicity**:
