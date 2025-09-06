@@ -29,6 +29,7 @@ This feature delivers a backend service that periodically fetches summaries of t
 **Performance Goals**: Timely email delivery (within 5 minutes of scheduled fetch), robust error handling
 **Constraints**: Must run within Lambda limits (<15 min execution, <512MB memory), secure handling of credentials
 **Scale/Scope**: Single recipient (with option to extend), periodic execution (daily/weekly), scalable for future multi-recipient support
+**Collaboration/Hosting**: The project is shared via GitHub
 
 ## Constitution Check
 **Simplicity**:
