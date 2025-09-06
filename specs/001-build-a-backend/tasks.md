@@ -29,48 +29,49 @@
 - [ ] T004 [P] Configure linting and formatting tools (ESLint, Prettier) in `src/`
 - [ ] T005 [P] Setup environment variable management (dotenv or AWS Parameter Store) in `src/config/`
 - [ ] T006 [P] Configure Jest for TypeScript using ts-jest; add jest.config.js and install ts-jest and @types/jest
+- [ ] T007 [P] Set up Jest mocks for external services (nodemailer, Gemini API) in contract/integration tests; avoid logging or asserting on circular objects
 
 ## Phase 3.2: Tests First (TDD)
-- [ ] T007 Create contract test for Gemini API client in `tests/contract/geminiClient.contract.test.ts`
-- [ ] T008 Create contract test for email delivery (nodemailer/SES) in `tests/contract/emailDelivery.contract.test.ts`
-- [ ] T009 [P] Create integration test for news fetch and email flow in `tests/integration/newsEmailFlow.integration.test.ts`
+- [ ] T008 Create contract test for Gemini API client in `tests/contract/geminiClient.contract.test.ts`
+- [ ] T009 Create contract test for email delivery (nodemailer/SES) in `tests/contract/emailDelivery.contract.test.ts`
+- [ ] T010 [P] Create integration test for news fetch and email flow in `tests/integration/newsEmailFlow.integration.test.ts`
 
 ## Phase 3.3: Core Implementation
-- [ ] T010 Implement NewsSummary model in `src/models/NewsSummary.ts`
-- [ ] T011 Implement Recipient model in `src/models/Recipient.ts`
-- [ ] T012 Implement FetchSchedule model in `src/models/FetchSchedule.ts`
-- [ ] T013 Implement Gemini API client in `src/services/geminiClient.ts`
-- [ ] T014 Implement email delivery service in `src/services/emailService.ts`
-- [ ] T015 Implement Lambda handler in `src/handler.ts`
+- [ ] T011 Implement NewsSummary model in `src/models/NewsSummary.ts`
+- [ ] T012 Implement Recipient model in `src/models/Recipient.ts`
+- [ ] T013 Implement FetchSchedule model in `src/models/FetchSchedule.ts`
+- [ ] T014 Implement Gemini API client in `src/services/geminiClient.ts`
+- [ ] T015 Implement email delivery service in `src/services/emailService.ts`
+- [ ] T016 Implement Lambda handler in `src/handler.ts`
 
 ## Phase 3.4: Integration
-- [ ] T016 [P] Integrate logging (winston) in `src/logger.ts`
-- [ ] T017 [P] Implement error handling middleware in `src/middleware/errorHandler.ts`
+- [ ] T017 [P] Integrate logging (winston) in `src/logger.ts`
+- [ ] T018 [P] Implement error handling middleware in `src/middleware/errorHandler.ts`
 
 ## Phase 3.5: Polish
-- [ ] T018 [P] Write unit tests for models and services in `tests/unit/`
-- [ ] T019 [P] Add performance test for Lambda execution in `tests/performance/lambdaPerformance.test.ts`
-- [ ] T020 [P] Write documentation for setup and usage in `README.md`
+- [ ] T019 [P] Write unit tests for models and services in `tests/unit/`
+- [ ] T020 [P] Add performance test for Lambda execution in `tests/performance/lambdaPerformance.test.ts`
+- [ ] T021 [P] Write documentation for setup and usage in `README.md`
 
 ## Dependency Notes
-- Setup tasks (T001-T006) must be completed before any other tasks
-- Contract and integration tests (T007-T009) must be completed before implementation (T010-T015)
-- Models (T010-T012) before services (T013-T014)
-- Services before Lambda handler (T015)
-- Core before integration (T016-T017)
-- All before polish (T018-T020)
+- Setup tasks (T001-T007) must be completed before any other tasks
+- Contract and integration tests (T008-T010) must be completed before implementation (T011-T016)
+- Models (T011-T013) before services (T014-T015)
+- Services before Lambda handler (T016)
+- Core before integration (T017-T018)
+- All before polish (T019-T021)
 
 ## Parallel Execution Guidance
 - Tasks marked [P] can be executed in parallel:
-  - T001, T004, T005, T006 (setup)
-  - T009 (integration test)
-  - T016, T017 (integration)
-  - T018, T019, T020 (polish)
+  - T001, T004, T005, T006, T007 (setup)
+  - T010 (integration test)
+  - T017, T018 (integration)
+  - T019, T020, T021 (polish)
 - Example Task agent command:
   ```bash
-  task-agent run T001 T004 T005 T006
-  task-agent run T016 T017
-  task-agent run T018 T019 T020
+  task-agent run T001 T004 T005 T006 T007
+  task-agent run T017 T018
+  task-agent run T019 T020 T021
   ```
 
 ## File Paths

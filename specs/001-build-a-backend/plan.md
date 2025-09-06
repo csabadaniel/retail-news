@@ -31,6 +31,7 @@ This feature delivers a backend service that periodically fetches summaries of t
 **Scale/Scope**: Single recipient (with option to extend), periodic execution (daily/weekly), scalable for future multi-recipient support
 **Collaboration/Hosting**: The project is shared via GitHub
 **Test Runner Setup**: Jest must be configured for TypeScript using `ts-jest`. Add a `jest.config.js` file and install `ts-jest` and `@types/jest` as dev dependencies to ensure tests run correctly.
+**Test Reliability**: All contract and integration tests must mock external services (e.g., nodemailer, Gemini API) to avoid real network calls. Avoid logging or asserting on objects with circular references to prevent serialization errors.
 
 ## Constitution Check
 **Simplicity**:
@@ -77,7 +78,15 @@ This feature delivers a backend service that periodically fetches summaries of t
    ```
 - Update `package.json` test script to:
    ```json
-   "test": "jest"
+    "test": "jest"
+
+### Test Reliability
+- Use Jest mocks for external dependencies:
+   - Mock nodemailer transport and Gemini API client in contract/integration tests
+   - Do not perform real network calls in tests
+- Avoid logging or asserting on circular objects in tests
+
+This ensures all tests pass reliably and prevents errors from network calls or circular structures.
    ```
 
 This ensures Jest can run TypeScript tests and resolves syntax errors during test execution.
