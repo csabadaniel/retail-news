@@ -31,6 +31,22 @@ This document explains how to deploy the Retail News Backend service to AWS Lamb
    npm run build:sam
    ```
 
+3. **Configure your deployment**
+   
+   **For local development:**
+   ```bash
+   cp config/env.sample .env
+   # Edit .env with your actual values
+   ```
+   
+   **For AWS SAM deployment:**
+   ```bash
+   cp config/samconfig.toml.sample samconfig.toml
+   # Edit samconfig.toml with your actual values
+   ```
+   
+   This step is optional - you can also provide parameters during the guided deployment.
+
 ## First-Time Deployment
 
 Run the guided deployment to set up your stack:
@@ -82,7 +98,13 @@ The following environment variables are configured through SAM parameters:
 
 ### Local Development
 
-For local development, create a `.env` file:
+For local development, copy the sample environment file and customize it:
+
+```bash
+cp config/env.sample .env
+```
+
+Then edit the `.env` file with your actual values:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key

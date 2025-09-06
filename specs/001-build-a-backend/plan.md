@@ -25,16 +25,11 @@ This feature delivers a backend service that periodically fetches summaries of t
 **Storage**: N/A (configuration via environment variables or AWS Parameter Store)
 **Testing**: Jest (unit, integration, contract)
 **Target Platform**: AWS Lambda (deployed via AWS SAM)
-**Deployment**: AWS SAM (Serverless Application Model) with `template.yaml` configuration file. Environment variables must be configured in the SAM template rather than `.env` files for production deployment. Build process: `sam build` followed by `sam deploy --guided` for initial setup.
+**Configuration Management**: Deployment and runtime configuration shall be fetched from local configuration files. The project shall contain sample configuration files that can be copied and filled with real parameters. Support for both local development (.env) and production deployment (SAM parameters) configurations.
 **Project Type**: Single backend service (Option 1 structure)
 **Performance Goals**: Timely email delivery (within 5 minutes of scheduled fetch), robust error handling
 **Constraints**: Must run within Lambda limits (<15 min execution, <512MB memory), secure handling of credentials
 **Scale/Scope**: Single recipient (with option to extend), periodic execution (daily/weekly), scalable for future multi-recipient support
-**Collaboration/Hosting**: The project is shared via GitHub
-**Test Runner Setup**: Jest must be configured for TypeScript using `ts-jest`. Add a `jest.config.js` file and install `ts-jest` and `@types/jest` as dev dependencies to ensure tests run correctly.
-**Test Reliability**: All contract and integration tests must mock external services (e.g., nodemailer, Gemini API) at the top of each test file using Jest mocks. No test should perform real network calls. Avoid logging or asserting on objects with circular references to prevent serialization errors. If a test fails due to a circular structure, refactor the test to only assert on primitive values or use custom serializers.
-**Troubleshooting Test Failures**:
-If contract or integration tests fail due to real network calls (e.g., SMTP errors from nodemailer or Gemini API), ensure these services are mocked at the top of the test file using Jest. For circular structure errors (e.g., TypeError: Converting circular structure to JSON), refactor the test to only assert on primitive values or use a custom serializer. Do not log or assert on objects with circular references.
 
 ## Constitution Check
 **Simplicity**:
@@ -66,58 +61,6 @@ If contract or integration tests fail due to real network calls (e.g., SMTP erro
 
 ## Project Structure
 
-### Test Runner Setup
-- Install dev dependencies:
-   ```bash
-   npm install --save-dev ts-jest @types/jest
-   ```
-- Add `jest.config.js` to project root:
-   ```js
-   module.exports = {
-      preset: 'ts-jest',
-      testEnvironment: 'node',
-      testMatch: ['**/tests/**/*.test.ts'],
-   };
-   ```
-- Update `package.json` test script to:
-   ```json
-    "test": "jest"
-   ```
-
-### AWS SAM Deployment Setup
-- Create `template.yaml` at repository root:
-   ```yaml
-   AWSTemplateFormatVersion: '2010-09-09'
-   Transform: AWS::Serverless-2016-10-31
-   Resources:
-     RetailNewsFunction:
-       Type: AWS::Serverless::Function
-       Properties:
-         Handler: dist/handler.main
-         Runtime: nodejs18.x
-         CodeUri: .
-         Environment:
-           Variables:
-             GEMINI_API_KEY: !Ref GeminiApiKey
-             # Configure other environment variables
-   ```
-- Deploy with:
-   ```bash
-   sam build
-   sam deploy --guided
-   ```
-
-### Test Reliability
-- Use Jest mocks for external dependencies:
-   - Mock nodemailer transport and Gemini API client in contract/integration tests
-   - Do not perform real network calls in tests
-- Avoid logging or asserting on circular objects in tests
-
-This ensures all tests pass reliably and prevents errors from network calls or circular structures.
-   ```
-
-This ensures Jest can run TypeScript tests and resolves syntax errors during test execution.
-
 ### Documentation (this feature)
 ```
 specs/001-build-a-backend/
@@ -135,12 +78,17 @@ src/
 ├── models/
 ├── services/
 ├── cli/
-└── lib/
+├── lib/
+└── config/
 
 tests/
 ├── contract/
 ├── integration/
 └── unit/
+
+config/
+├── .env.sample          # Sample environment variables for local development
+└── samconfig.toml.sample # Sample SAM deployment configuration
 
 template.yaml            # AWS SAM deployment configuration
 ```

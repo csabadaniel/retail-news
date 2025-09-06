@@ -32,56 +32,58 @@
 - [ ] T006 [P] Configure Jest for TypeScript using ts-jest; add jest.config.js and install ts-jest and @types/jest
 - [ ] T007 [P] Set up Jest mocks for external services (nodemailer, Gemini API) at the top of each contract/integration test file using Jest mocks. Do not perform real network calls in tests. If a test fails due to circular structure errors (e.g., TypeError: Converting circular structure to JSON), refactor the test to only assert on primitive values or use a custom serializer. Do not log or assert on objects with circular references.
 - [ ] T008 [P] Create AWS SAM template (`template.yaml`) at repository root with Lambda function configuration, environment variables, and deployment settings
+- [ ] T009 [P] Create sample environment configuration file (`config/.env.sample`) with all required environment variables and sample values
+- [ ] T010 [P] Create sample SAM configuration file (`config/samconfig.toml.sample`) with deployment parameters and example values
 
 ## Phase 3.2: Tests First (TDD)
-- [ ] T009 Create contract test for Gemini API client in `tests/contract/geminiClient.contract.test.ts`
-- [ ] T010 Create contract test for email delivery (nodemailer/SES) in `tests/contract/emailDelivery.contract.test.ts`
-- [ ] T011 [P] Create integration test for news fetch and email flow in `tests/integration/newsEmailFlow.integration.test.ts`
+- [ ] T011 Create contract test for Gemini API client in `tests/contract/geminiClient.contract.test.ts`
+- [ ] T012 Create contract test for email delivery (nodemailer/SES) in `tests/contract/emailDelivery.contract.test.ts`
+- [ ] T013 [P] Create integration test for news fetch and email flow in `tests/integration/newsEmailFlow.integration.test.ts`
 
 ## Phase 3.3: Core Implementation
-- [ ] T012 Implement NewsSummary model in `src/models/NewsSummary.ts`
-- [ ] T013 Implement Recipient model in `src/models/Recipient.ts`
-- [ ] T014 Implement FetchSchedule model in `src/models/FetchSchedule.ts`
-- [ ] T015 Implement Gemini API client in `src/services/geminiClient.ts`
-- [ ] T016 Implement email delivery service in `src/services/emailService.ts`
-- [ ] T017 Implement Lambda handler in `src/handler.ts`
+- [ ] T014 Implement NewsSummary model in `src/models/NewsSummary.ts`
+- [ ] T015 Implement Recipient model in `src/models/Recipient.ts`
+- [ ] T016 Implement FetchSchedule model in `src/models/FetchSchedule.ts`
+- [ ] T017 Implement Gemini API client in `src/services/geminiClient.ts`
+- [ ] T018 Implement email delivery service in `src/services/emailService.ts`
+- [ ] T019 Implement Lambda handler in `src/handler.ts`
 
 ## Phase 3.4: Integration
-- [ ] T018 [P] Integrate logging (winston) in `src/logger.ts`
-- [ ] T019 [P] Implement error handling middleware in `src/middleware/errorHandler.ts`
+- [ ] T020 [P] Integrate logging (winston) in `src/logger.ts`
+- [ ] T021 [P] Implement error handling middleware in `src/middleware/errorHandler.ts`
 
 ## Phase 3.5: Deployment
-- [ ] T020 [P] Configure build script for Lambda deployment in `package.json` (TypeScript compilation to `dist/`)
-- [ ] T021 [P] Add deployment scripts for AWS SAM (`sam build`, `sam deploy`) in `package.json`
-- [ ] T022 Create deployment documentation in `DEPLOYMENT.md` with SAM setup and configuration instructions
+- [ ] T022 [P] Configure build script for Lambda deployment in `package.json` (TypeScript compilation to `dist/`)
+- [ ] T023 [P] Add deployment scripts for AWS SAM (`sam build`, `sam deploy`) in `package.json`
+- [ ] T024 Create deployment documentation in `DEPLOYMENT.md` with SAM setup and configuration instructions
 
 ## Phase 3.6: Polish
-- [ ] T023 [P] Write unit tests for models and services in `tests/unit/`
-- [ ] T024 [P] Add performance test for Lambda execution in `tests/performance/lambdaPerformance.test.ts`
-- [ ] T025 [P] Write documentation for setup and usage in `README.md`
+- [ ] T025 [P] Write unit tests for models and services in `tests/unit/`
+- [ ] T026 [P] Add performance test for Lambda execution in `tests/performance/lambdaPerformance.test.ts`
+- [ ] T027 [P] Write documentation for setup and usage in `README.md`
 
 ## Dependency Notes
-- Setup tasks (T001-T008) must be completed before any other tasks
-- Contract and integration tests (T009-T011) must be completed before implementation (T012-T017)
-- Models (T012-T014) before services (T015-T016)
-- Services before Lambda handler (T017)
-- Core before integration (T018-T019)
-- Integration before deployment (T020-T022)
-- All before polish (T023-T025)
+- Setup tasks (T001-T010) must be completed before any other tasks
+- Contract and integration tests (T011-T013) must be completed before implementation (T014-T019)
+- Models (T014-T016) before services (T017-T018)
+- Services before Lambda handler (T019)
+- Core before integration (T020-T021)
+- Integration before deployment (T022-T024)
+- All before polish (T025-T027)
 
 ## Parallel Execution Guidance
 - Tasks marked [P] can be executed in parallel:
-  - T001, T004, T005, T006, T007, T008 (setup)
-  - T011 (integration test)
-  - T018, T019 (integration)
-  - T020, T021, T022 (deployment)
-  - T023, T024, T025 (polish)
+  - T001, T004, T005, T006, T007, T008, T009, T010 (setup)
+  - T013 (integration test)
+  - T020, T021 (integration)
+  - T022, T023, T024 (deployment)
+  - T025, T026, T027 (polish)
 - Example Task agent command:
   ```bash
-  task-agent run T001 T004 T005 T006 T007 T008
-  task-agent run T018 T019
-  task-agent run T020 T021 T022
-  task-agent run T023 T024 T025
+  task-agent run T001 T004 T005 T006 T007 T008 T009 T010
+  task-agent run T020 T021
+  task-agent run T022 T023 T024
+  task-agent run T025 T026 T027
   ```
 
 ## File Paths
