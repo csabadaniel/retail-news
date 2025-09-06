@@ -30,6 +30,7 @@ This feature delivers a backend service that periodically fetches summaries of t
 **Constraints**: Must run within Lambda limits (<15 min execution, <512MB memory), secure handling of credentials
 **Scale/Scope**: Single recipient (with option to extend), periodic execution (daily/weekly), scalable for future multi-recipient support
 **Collaboration/Hosting**: The project is shared via GitHub
+**Test Runner Setup**: Jest must be configured for TypeScript using `ts-jest`. Add a `jest.config.js` file and install `ts-jest` and `@types/jest` as dev dependencies to ensure tests run correctly.
 
 ## Constitution Check
 **Simplicity**:
@@ -60,6 +61,26 @@ This feature delivers a backend service that periodically fetches summaries of t
 - Breaking changes handled via feature branches and PRs
 
 ## Project Structure
+
+### Test Runner Setup
+- Install dev dependencies:
+   ```bash
+   npm install --save-dev ts-jest @types/jest
+   ```
+- Add `jest.config.js` to project root:
+   ```js
+   module.exports = {
+      preset: 'ts-jest',
+      testEnvironment: 'node',
+      testMatch: ['**/tests/**/*.test.ts'],
+   };
+   ```
+- Update `package.json` test script to:
+   ```json
+   "test": "jest"
+   ```
+
+This ensures Jest can run TypeScript tests and resolves syntax errors during test execution.
 
 ### Documentation (this feature)
 ```
