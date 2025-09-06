@@ -11,6 +11,9 @@ coverage/
 # AWS SAM
 .aws-sam/
 
+# AWS SAM
+.aws-sam/
+
 # VSCode
 .vscode/
 

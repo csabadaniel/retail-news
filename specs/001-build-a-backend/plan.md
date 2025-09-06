@@ -25,6 +25,7 @@ This feature delivers a backend service that periodically fetches summaries of t
 **Storage**: N/A (configuration via environment variables or AWS Parameter Store)
 **Testing**: Jest (unit, integration, contract)
 **Target Platform**: AWS Lambda (deployed via AWS SAM)
+**Deployment**: AWS SAM (Serverless Application Model) with `template.yaml` configuration file. Environment variables must be configured in the SAM template rather than `.env` files for production deployment. Build process: `sam build` followed by `sam deploy --guided` for initial setup.
 **Project Type**: Single backend service (Option 1 structure)
 **Performance Goals**: Timely email delivery (within 5 minutes of scheduled fetch), robust error handling
 **Constraints**: Must run within Lambda limits (<15 min execution, <512MB memory), secure handling of credentials
@@ -81,6 +82,30 @@ If contract or integration tests fail due to real network calls (e.g., SMTP erro
 - Update `package.json` test script to:
    ```json
     "test": "jest"
+   ```
+
+### AWS SAM Deployment Setup
+- Create `template.yaml` at repository root:
+   ```yaml
+   AWSTemplateFormatVersion: '2010-09-09'
+   Transform: AWS::Serverless-2016-10-31
+   Resources:
+     RetailNewsFunction:
+       Type: AWS::Serverless::Function
+       Properties:
+         Handler: dist/handler.main
+         Runtime: nodejs18.x
+         CodeUri: .
+         Environment:
+           Variables:
+             GEMINI_API_KEY: !Ref GeminiApiKey
+             # Configure other environment variables
+   ```
+- Deploy with:
+   ```bash
+   sam build
+   sam deploy --guided
+   ```
 
 ### Test Reliability
 - Use Jest mocks for external dependencies:
@@ -116,6 +141,8 @@ tests/
 ├── contract/
 ├── integration/
 └── unit/
+
+template.yaml            # AWS SAM deployment configuration
 ```
 
 **Structure Decision**: Single backend service (Option 1)

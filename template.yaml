@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Retail News Email Service - Periodically fetches UK retail news summaries and emails them
+
+Globals:
+  Function:
+    Timeout: 300
+    Runtime: nodejs18.x
+    MemorySize: 512
+    Environment:
+      Variables:
+        NODE_ENV: production
+
+Parameters:
+  GeminiApiKey:
+    Type: String
+    Description: API key for Gemini service
+    NoEcho: true
+  GeminiEndpoint:
+    Type: String
+    Description: Gemini API endpoint URL
+    Default: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
+  EmailFrom:
+    Type: String
+    Description: Sender email address
+  EmailHost:
+    Type: String
+    Description: SMTP server host
+  EmailPort:
+    Type: Number
+    Description: SMTP server port
+    Default: 587
+  EmailUser:
+    Type: String
+    Description: SMTP username
+  EmailPass:
+    Type: String
+    Description: SMTP password
+    NoEcho: true
+  RecipientEmail:
+    Type: String
+    Description: Email address to send news summaries to
+  FetchInterval:
+    Type: String
+    Description: How often to fetch news (daily, weekly)
+    Default: 'daily'
+  FetchTime:
+    Type: String
+    Description: Time to fetch news (HH:MM format)
+    Default: '08:00'
+
+Resources:
+  RetailNewsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Handler: handler.main
+      Runtime: nodejs18.x
+      Environment:
+        Variables:
+          GEMINI_API_KEY: !Ref GeminiApiKey
+          GEMINI_ENDPOINT: !Ref GeminiEndpoint
+          EMAIL_FROM: !Ref EmailFrom
+          EMAIL_HOST: !Ref EmailHost
+          EMAIL_PORT: !Ref EmailPort
+          EMAIL_USER: !Ref EmailUser
+          EMAIL_PASS: !Ref EmailPass
+          RECIPIENT_EMAIL: !Ref RecipientEmail
+          FETCH_INTERVAL: !Ref FetchInterval
+          FETCH_TIME: !Ref FetchTime
+      Events:
+        ScheduledFetch:
+          Type: Schedule
+          Properties:
+            Schedule: 'cron(0 8 * * ? *)'  # Daily at 8:00 AM UTC
+            Description: 'Fetch and email retail news summaries'
+            Enabled: true
+
+  RetailNewsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${RetailNewsFunction}'
+      RetentionInDays: 14
+
+Outputs:
+  RetailNewsFunctionArn:
+    Description: 'Retail News Lambda Function ARN'
+    Value: !GetAtt RetailNewsFunction.Arn
+  RetailNewsFunctionName:
+    Description: 'Retail News Lambda Function Name'
+    Value: !Ref RetailNewsFunction

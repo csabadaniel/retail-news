@@ -5,9 +5,13 @@
   "main": "src/handler.ts",
   "scripts": {
     "build": "tsc",
+    "build:sam": "npm run build && cp package*.json dist/",
     "test": "jest",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "sam:build": "sam build",
+    "sam:deploy": "sam deploy --guided",
+    "sam:deploy:prod": "sam deploy"
   },
   "dependencies": {
     "aws-sdk": "^2.1480.0",
